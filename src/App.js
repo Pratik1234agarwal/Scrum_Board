@@ -2,6 +2,7 @@ import './App.css';
 import { Draggable, Droppable, DragDropContext } from 'react-beautiful-dnd';
 import { v4 as uuid } from 'uuid';
 import { useState } from 'react';
+import Grid from '@material-ui/core/Grid';
 
 const itemFromBackend = [
   { id: uuid(), content: 'Learn React.js' },
@@ -76,9 +77,10 @@ function App() {
         onDragEnd={(result) => onDragEnd(result, columns, setColumns)}
       >
         <div className='container'>
-          {Object.entries(columns).map(([id, column]) => {
-            {
-              /* <div
+          <Grid container spacing={1}>
+            {Object.entries(columns).map(([id, column]) => {
+              {
+                /* <div
               className='container'
               style={{
                 display: 'flex',
@@ -86,65 +88,73 @@ function App() {
                 flexDirection: 'column',
               }} 
             > */
-            }
-            return (
-              <Droppable droppableId={id} key={id}>
-                {(provided, snapshot) => {
-                  return (
-                    <div
-                      className='task-board'
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      style={{
-                        background: snapshot.isDraggingOver
-                          ? 'lightblue'
-                          : 'white',
-                        padding: 4,
-                        width: 250,
-                        minHeight: 500,
-                      }}
-                    >
-                      <h2 className='task-heading'>{column.name}</h2>
-                      {column.items.map((item, index) => {
-                        return (
-                          <Draggable
-                            key={item.id}
-                            draggableId={item.id}
-                            index={index}
+              }
+              return (
+                <Droppable droppableId={id} key={id}>
+                  {(provided, snapshot) => {
+                    return (
+                      <Grid item xs={12} sm={6} md={4} lg={4}>
+                        <div
+                          className='task-board'
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                          style={{
+                            background: snapshot.isDraggingOver
+                              ? 'lightblue'
+                              : 'white',
+                            padding: 4,
+                            width: 250,
+                            minHeight: 500,
+                          }}
+                        >
+                          <h2
+                            onDoubleClick={() => alert('Double clicked')}
+                            className='task-heading'
                           >
-                            {(provided, snapshot) => {
-                              return (
-                                <div
-                                  className='task-item'
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  style={{
-                                    userSelect: 'none',
-                                    padding: 8,
-                                    margin: '8px 0 8px 0',
-                                    minHeight: '50px',
-                                    backgroundColor: snapshot.isDragging
-                                      ? '#263B4A'
-                                      : '#456C86',
-                                    color: 'white',
-                                    ...provided.draggableProps.style,
-                                  }}
-                                >
-                                  {item.content}
-                                </div>
-                              );
-                            }}
-                          </Draggable>
-                        );
-                      })}
-                      {provided.placeholder}
-                    </div>
-                  );
-                }}
-              </Droppable>
-            );
-          })}
+                            {column.name}
+                          </h2>
+                          {column.items.map((item, index) => {
+                            return (
+                              <Draggable
+                                key={item.id}
+                                draggableId={item.id}
+                                index={index}
+                              >
+                                {(provided, snapshot) => {
+                                  return (
+                                    <div
+                                      className='task-item'
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      style={{
+                                        userSelect: 'none',
+                                        padding: 8,
+                                        margin: '8px 0 8px 0',
+                                        minHeight: '50px',
+                                        backgroundColor: snapshot.isDragging
+                                          ? '#263B4A'
+                                          : '#456C86',
+                                        color: 'white',
+                                        ...provided.draggableProps.style,
+                                      }}
+                                    >
+                                      {item.content}
+                                    </div>
+                                  );
+                                }}
+                              </Draggable>
+                            );
+                          })}
+                          {provided.placeholder}
+                        </div>
+                      </Grid>
+                    );
+                  }}
+                </Droppable>
+              );
+            })}
+          </Grid>
         </div>
       </DragDropContext>
     </div>
